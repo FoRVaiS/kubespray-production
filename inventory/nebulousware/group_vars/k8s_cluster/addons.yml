@@ -181,7 +181,7 @@ metallb_speaker_tolerations:
   #   effect: "NoSchedule"
   - key: "node-role.kubernetes.io/control-plane"
     operator: "Equal"
-    value: ""
+    value: "false"
     effect: "NoSchedule"
 metallb_controller_tolerations:
   # - key: "node-role.kubernetes.io/master"
@@ -190,7 +190,7 @@ metallb_controller_tolerations:
   #   effect: "NoSchedule"
   - key: "node-role.kubernetes.io/control-plane"
     operator: "Equal"
-    value: ""
+    value: "false"
     effect: "NoSchedule"
 metallb_version: v0.13.9
 metallb_protocol: "layer2"
