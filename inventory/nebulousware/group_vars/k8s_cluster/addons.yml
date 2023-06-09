@@ -192,10 +192,10 @@ metallb_controller_tolerations:
     operator: "Equal"
     value: "false"
     effect: "NoSchedule"
-metallb_version: v0.13.9
-metallb_protocol: "layer2"
-metallb_port: "7472"
-metallb_memberlist_port: "7946"
+# metallb_version: v0.13.9
+# metallb_protocol: "layer2"
+# metallb_port: "7472"
+# metallb_memberlist_port: "7946"
 metallb_config:
   address_pools:
     primary:
