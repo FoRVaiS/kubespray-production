@@ -14,6 +14,9 @@ import:
 
 import-config: import
 
+prepare:
+	$(PLAYBOOK) prepare-nodes.yml
+
 reset:
 	$(PLAYBOOK) reset.yml
 

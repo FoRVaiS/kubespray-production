@@ -1,0 +1,44 @@
+---
+- name: Prepare Node for Kubernetes Deployment
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    remote_cert_directory: /etc/kubernetes/ssl
+    tls_cert_local_filepath: certs/tls.crt
+    tls_key_local_filepath: certs/tls.key
+    ca_cert_local_filepath: certs/ca.crt
+    ca_key_local_filepath: certs/ca.key
+  tasks:
+    - name: Print Node Hostnames
+      debug:
+        msg: "Preparing host: {{ inventory_hostname }} ({{ ansible_host }})"
+
+    - name: Update and Upgrade Apt Packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Create Remote Certificate Directory
+      file:
+        path: "{{ remote_cert_directory }}"
+        state: directory
+
+    - name: Copy TLS Certificates
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: '0644'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"  # You can also set the group here if needed
+      with_items:
+        - { src: "{{ tls_cert_local_filepath }}", dest: "{{ remote_cert_directory }}/tls.crt" }
+        - { src: "{{ tls_key_local_filepath }}", dest: "{{ remote_cert_directory }}/tls.key" }
+        - { src: "{{ ca_cert_local_filepath }}", dest: "{{ remote_cert_directory }}/ca.crt" }
+        - { src: "{{ ca_key_local_filepath }}", dest: "{{ remote_cert_directory }}/ca.key" }
+      when: tls_cert_local_filepath is defined and tls_key_local_filepath is defined and ca_cert_local_filepath is defined and ca_key_local_filepath is defined
+
+    - name: Install nfs-common Package
+      apt:
+        name: nfs-common
+        state: present
